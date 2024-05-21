@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>region-screenshot-js</title>
+    <title>Document</title>
     <style>
         body,
         html {
@@ -164,6 +164,9 @@
         screenshot.on("successCreated", (res) => {
             disabled = false;
         });
+        screenshot.on("errorCreated", (res) => {
+            disabled = false;
+        });
     });
     $(".screenshot-custom").click(() => {
         if (disabled) return;
@@ -211,6 +214,9 @@
             $(".screenshot-img img").attr("src", res);
         });
         screenshot.on("successCreated", (res) => {
+            disabled = false;
+        });
+        screenshot.on("errorCreated", (res) => {
             disabled = false;
         });
     });
