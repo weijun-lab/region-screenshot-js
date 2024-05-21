@@ -1710,7 +1710,6 @@ class Tools extends Base {
 class RegionScreenshot extends Base {
   constructor(options = {}) {
     super();
-
     options.regionColor ??= "#409eff";
     this.region = new SelectRegion({
       ...options,
@@ -1801,7 +1800,7 @@ class RegionScreenshot extends Base {
               let ctx = canvas.getContext("2d");
               ctx.drawImage(video, 0, 0, innerWidth, innerHeight);
               resolve(canvas);
-            }, 300);
+            }, 500);
           };
           let that = this;
           stream.getTracks()[0].onended = function () {
