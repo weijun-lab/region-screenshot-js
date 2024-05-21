@@ -52,7 +52,7 @@ screenshot.on("screenshotGenerated",(dataUrl)=>{
 | **mosaicOptions** | Object | {<br>size: [6, 8, 10]<br>} | Configures available line widths for Mosaic |
 | **textOptions** | Object | {<br>color:globalColorOptions,<br>size: [16, 18, 20]<br>} | Configures available text colors and font sizes |
 | **arrowOptions** | Object | {<br>color:globalColorOptions,<br>size: [4, 6, 8]<br>} | Configures available arrow colors and line widths |
-| **customDrawing** |  Array<[customDrawingObject](#customDrawingObject)>  | - | Custom drawings (see below) |
+| **customDrawing** |  Array<br><[customDrawingObject](#customDrawingObject)>  | - | Custom drawings (see below) |
 
 <a id="regionSizeIndicator"></a>
 
