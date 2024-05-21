@@ -44,14 +44,14 @@ screenshot.on("screenshotGenerated",(dataUrl)=>{
 | Options | Type | Default | Description |
 | --- | --- | --- | --- |
 | **maskColor** | String | rgba(0,0,0,0.5) | Mask layer color |
-| **globalColorOptions** | String | ["#ff3a3a","#f8b60f","#0083ff","#40ff00","#363636","#e9e9e9"] | Available colors for all drawing items (overrides when individual item has its color config) |
+| **globalColorOptions** | String | [<br>"#ff3a3a","#f8b60f",<br>"#0083ff","#40ff00",<br>"#363636","#e9e9e9"<br>] | Available colors for all drawing items (overrides when individual item has its color config) |
 | **regionSizeIndicator** | [Object](#regionSizeIndicator) | {...} | Top-left region size indicator styles (see below) |
-| **rectangleOptions** | Object | {color:globalColorOptions ,size: [4, 6, 8]} | Configures available colors and line widths for rectangle drawing |
-| **circleOptions** | Object | {color:globalColorOptions ,size: [4, 6, 8]} | Configures available colors and line widths for circle drawing |
-| **paintOptions** | Object | {color:globalColorOptions ,size: [4, 6, 8]} | Configures available colors and line widths for freehand drawing |
-| **mosaicOptions** | Object | {size: [6, 8, 10]} | Configures available line widths for Mosaic |
-| **textOptions** | Object | {color:globalColorOptions ,size: [16, 18, 20]} | Configures available text colors and font sizes |
-| **arrowOptions** | Object | {color:globalColorOptions ,size: [4, 6, 8]} | Configures available arrow colors and line widths |
+| **rectangleOptions** | Object | {<br>color:globalColorOptions,<br>size: [4, 6, 8]<br>} | Configures available colors and line widths for rectangle drawing |
+| **circleOptions** | Object | {<br>color:globalColorOptions,<br>size: [4, 6, 8]<br>} | Configures available colors and line widths for circle drawing |
+| **paintOptions** | Object | {<br>color:globalColorOptions,<br>size: [4, 6, 8]<br>} | Configures available colors and line widths for freehand drawing |
+| **mosaicOptions** | Object | {<br>size: [6, 8, 10]<br>} | Configures available line widths for Mosaic |
+| **textOptions** | Object | {<br>color:globalColorOptions,<br>size: [16, 18, 20]<br>} | Configures available text colors and font sizes |
+| **arrowOptions** | Object | {<br>color:globalColorOptions,<br>size: [4, 6, 8]<br>} | Configures available arrow colors and line widths |
 | **customDrawing** |  Array<[customDrawingObject](#customDrawingObject)>  | - | Custom drawings (see below) |
 
 <a id="regionSizeIndicator"></a>

@@ -43,15 +43,15 @@ screenshot.on("screenshotGenerated",(dataUrl)=>{
 | 配置项 | 类型 | 默认值 | 描述 |
 | --- | --- | --- | --- |
 | **maskColor** | String | rgba(0,0,0,0.5) | 遮罩层颜色 |
-| **globalColorOptions** | Array | ["#ff3a3a","#f8b60f","#0083ff","#40ff00","#363636","#e9e9e9"] | 配置所有绘制项可供选择的颜色（当绘制项有单独的颜色配置时，该配置无效） |
+| **globalColorOptions** | Array | [<br>"#ff3a3a","#f8b60f",<br>"#0083ff","#40ff00",<br>"#363636","#e9e9e9"<br>] | 配置所有绘制项可供选择的颜色（当绘制项有单独的颜色配置时，该配置无效） |
 | **regionSizeIndicator** | [Object](#regionSizeIndicator) | {...} | 左上角区域大小指示器样式（见下文）|
-| **rectangleOptions** | Object | {color:globalColorOptions ,size: [4, 6, 8]} | 配置矩形绘制项可供选择的颜色和线宽 |
-| **circleOptions** | Object | {color:globalColorOptions ,size: [4, 6, 8]} | 配置圆形绘制项可供选择的颜色和线宽 |
-| **paintOptions** | Object | {color:globalColorOptions ,size: [4, 6, 8]} | 配置自由画笔绘制项可供选择的颜色和线宽 |
-| **mosaicOptions** | Object | {size: [6, 8, 10]} | 配置马赛克绘制项可供选择的线宽 |
-| **textOptions** | Object | {color:globalColorOptions ,size: [16, 18, 20]} | 配置文字绘制项可供选择的颜色和字体尺寸 |
-| **arrowOptions** | Object | {color:globalColorOptions ,size: [4, 6, 8]} | 配置箭头绘制项可供选择的颜色和线宽 |
-| **customDrawing** |  Array<[customDrawingObject](#customDrawingObject)> | - | 自定义绘制（见下文） |
+| **rectangleOptions** | Object | {<br>color:globalColorOptions,<br>size: [4, 6, 8]<br>} | 配置矩形绘制项可供选择的颜色和线宽 |
+| **circleOptions** | Object | {<br>color:globalColorOptions,<br>size: [4, 6, 8]<br>} | 配置圆形绘制项可供选择的颜色和线宽 |
+| **paintOptions** | Object | {<br>color:globalColorOptions,<br>size: [4, 6, 8]<br>} | 配置自由画笔绘制项可供选择的颜色和线宽 |
+| **mosaicOptions** | Object | {<br>size: [6, 8, 10]<br>} | 配置马赛克绘制项可供选择的线宽 |
+| **textOptions** | Object | {<br>color:globalColorOptions,<br>size: [16, 18, 20]<br>} | 配置文字绘制项可供选择的颜色和字体尺寸 |
+| **arrowOptions** | Object | {<br>color:globalColorOptions,<br>size: [4, 6, 8]<br>} | 配置箭头绘制项可供选择的颜色和线宽 |
+| **customDrawing** |  Array<br><[customDrawingObject](#customDrawingObject)> | - | 自定义绘制（见下文） |
 
 <a id="regionSizeIndicator"></a>
 
