@@ -150,7 +150,7 @@
 
 </body>
 <script src="https://unpkg.com/jquery@3.7.1/dist/jquery.js"></script>
-<script src="../dist/region-screenshot.umd.js"></script>
+<script src="./dist/region-screenshot.umd.js"></script>
 <script>
     let disabled = false;
     $(".screenshot").click(() => {
@@ -173,10 +173,10 @@
                 {
                     className: "emoji",
                     optionsHtml: `
-                        <img class="active" src="emoji-1.png"/>
-                        <img src="emoji-2.png"/>
-                        <img src="emoji-3.png"/>
-                        <img src="emoji-4.png"/>
+                        <img class="active" src="assets/emoji-1.png"/>
+                        <img src="assets/emoji-2.png"/>
+                        <img src="assets/emoji-3.png"/>
+                        <img src="assets/emoji-4.png"/>
                     `,
                     onOptionsCreated(optionsEl) {
                         $(optionsEl)
