@@ -5114,12 +5114,12 @@ class Qi extends fn {
           L.triggerEvent(L.closedCallback), L.close();
         };
       }).catch((M) => {
-        d(M);
+        this.close(), d(M);
       });
     });
   }
   close() {
-    this.region && this.region.canvas.remove(), this.tools && (this.tools.handle.remove(), this.tools.canvas && this.tools.canvas.remove()), this.webRTCStream && (this.webRTCStream.getTracks().forEach((d) => d.stop()), this.webRTCStream = null), document.body.style.overflow = this.bodyOriginStyle.overflow, document.body.style.userSelect = this.bodyOriginStyle.userSelect;
+    this.region && this.region.canvas && this.region.canvas.remove(), this.tools && (this.tools.handle && this.tools.handle.remove(), this.tools.canvas && this.tools.canvas.remove()), this.webRTCStream && (this.webRTCStream.getTracks().forEach((d) => d.stop()), this.webRTCStream = null), document.body.style.overflow = this.bodyOriginStyle.overflow, document.body.style.userSelect = this.bodyOriginStyle.userSelect;
   }
   on(a, d) {
     super.on(a, d), this.region.on(a, d), this.tools.on(a, d);

@@ -1809,16 +1809,17 @@ class RegionScreenshot extends Base {
           };
         })
         .catch((error) => {
+          this.close();
           reject(error);
         });
     });
   }
   close() {
     if (this.region) {
-      this.region.canvas.remove();
+      this.region.canvas&&this.region.canvas.remove();
     }
     if (this.tools) {
-      this.tools.handle.remove();
+      this.tools.handle&&this.tools.handle.remove();
       this.tools.canvas && this.tools.canvas.remove();
     }
 
