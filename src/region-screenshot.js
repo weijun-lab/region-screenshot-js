@@ -589,8 +589,8 @@ class Tools extends Base {
     this.region = options.region;
     this.screenshot = options.screenshot;
     this.customDrawing = options.customDrawing ?? [];
-    this.screenshotDownloadName =
-      options.screenshotDownloadName ?? "screenshot";
+    this.downloadName =
+      options.downloadName ?? "screenshot";
     this.globalColorOptions = options.globalColorOptions ?? [
       "#ff3a3a",
       "#f8b60f",
@@ -1121,7 +1121,7 @@ class Tools extends Base {
     let url = await this.screenshotGenerate();
     let a = document.createElement("a");
     a.href = url;
-    a.download = this.screenshotDownloadName + ".png";
+    a.download = this.downloadName + ".png";
     a.click();
     return url;
   }

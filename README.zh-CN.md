@@ -42,6 +42,7 @@ screenshot.on("screenshotGenerated",(dataUrl)=>{
 ### Options
 | 配置项 | 类型 | 默认值 | 描述 |
 | --- | --- | --- | --- |
+| **downloadName** | String | screenshot | 截图下载文件名 |
 | **maskColor** | String | rgba(0,0,0,0.5) | 遮罩层颜色 |
 | **globalColorOptions** | Array | [<br>"#ff3a3a","#f8b60f",<br>"#0083ff","#40ff00",<br>"#363636","#e9e9e9"<br>] | 配置所有绘制项可供选择的颜色（当绘制项有单独的颜色配置时，该配置无效） |
 | **regionSizeIndicator** | [Object](#regionSizeIndicator) | {...} | 左上角区域大小指示器样式（见下文）|

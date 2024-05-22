@@ -43,6 +43,7 @@ screenshot.on("screenshotGenerated",(dataUrl)=>{
 ### Options
 | Options | Type | Default | Description |
 | --- | --- | --- | --- |
+| **downloadName** | String | screenshot | Screenshot Download Filename |
 | **maskColor** | String | rgba(0,0,0,0.5) | Mask layer color |
 | **globalColorOptions** | String | [<br>"#ff3a3a","#f8b60f",<br>"#0083ff","#40ff00",<br>"#363636","#e9e9e9"<br>] | Available colors for all drawing items (overrides when individual item has its color config) |
 | **regionSizeIndicator** | [Object](#regionSizeIndicator) | {...} | Top-left region size indicator styles (see below) |
