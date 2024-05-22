@@ -4457,7 +4457,7 @@ class Vi extends fn {
 class Gi extends fn {
   constructor(a) {
     var d, T, M, w, L, S, m, b, A, R, X;
-    super(a), this.region = a.region, this.screenshot = a.screenshot, this.customDrawing = a.customDrawing ?? [], this.screenshotDownloadName = a.screenshotDownloadName ?? "screenshot", this.globalColorOptions = a.globalColorOptions ?? [
+    super(a), this.region = a.region, this.screenshot = a.screenshot, this.customDrawing = a.customDrawing ?? [], this.downloadName = a.downloadName ?? "screenshot", this.globalColorOptions = a.globalColorOptions ?? [
       "#ff3a3a",
       "#f8b60f",
       "#0083ff",
@@ -4779,7 +4779,7 @@ class Gi extends fn {
   }
   async screenshotDownload() {
     let a = await this.screenshotGenerate(), d = document.createElement("a");
-    return d.href = a, d.download = this.screenshotDownloadName + ".png", d.click(), a;
+    return d.href = a, d.download = this.downloadName + ".png", d.click(), a;
   }
   drawRectangle() {
     this.createCanvas();
@@ -5107,7 +5107,7 @@ class Qi extends fn {
               return;
             let S = document.createElement("canvas");
             S.width = innerWidth, S.height = innerHeight, S.getContext("2d").drawImage(w, 0, 0, innerWidth, innerHeight), a(S);
-          }, 300);
+          }, 500);
         };
         let L = this;
         M.getTracks()[0].onended = function() {
