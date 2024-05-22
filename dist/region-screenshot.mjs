@@ -5041,7 +5041,7 @@ class Gi extends fn {
     return this.createCanvas(), typeof d.onDrawingOpen == "function" && d.onDrawingOpen(this.canvas, d, () => {
       this.saveHistory();
     }), () => {
-      typeof d.onDrawingClose == "function" && d.onDrawingClose(this.canvas);
+      typeof d.onDrawingClose == "function" && d.onDrawingClose(this.canvas, d);
     };
   }
   saveHistory() {
