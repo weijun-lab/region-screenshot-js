@@ -3,8 +3,6 @@
 - - -
 **语言:** [English](README.md) / [简体中文](README.zh-CN.md)
 - - -
-A web-based selection screenshot plugin that helps you quickly build a beautiful and functional screenshot selection feature. 
-
 一个web端选区截图插件，帮助你快速构建出精美的选区截图功能。
 - - -
 ## 🎨在线Demo
