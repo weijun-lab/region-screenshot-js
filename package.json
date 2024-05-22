@@ -2,8 +2,11 @@
   "name": "region-screenshot-js",
   "version": "1.0.0",
   "description": "A web-based selection screenshot plugin that helps you quickly build a beautiful and functional screenshot selection feature. ",
-  "main": "dist/RegionScreenshot.umd.js",
-  "module": "dist/RegionScreenshot.mjs",
+  "main": "dist/region-screenshot.umd.js",
+  "module": "dist/region-screenshot.mjs",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
