@@ -1,6 +1,6 @@
 {
   "name": "region-screenshot-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A web-based selection screenshot plugin that helps you quickly build a beautiful and functional screenshot selection feature. ",
   "main": "dist/region-screenshot.umd.js",
   "module": "dist/region-screenshot.mjs",
