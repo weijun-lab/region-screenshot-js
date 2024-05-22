@@ -42,6 +42,7 @@ screenshot.on("screenshotGenerated",(dataUrl)=>{
 | Options | Type | Default | Description |
 | --- | --- | --- | --- |
 | **downloadName** | String | screenshot | Screenshot Download Filename |
+| **regionColor** | String | #409eff | region outline color |
 | **maskColor** | String | rgba(0,0,0,0.5) | Mask layer color |
 | **globalColorOptions** | String | [<br>"#ff3a3a","#f8b60f",<br>"#0083ff","#40ff00",<br>"#363636","#e9e9e9"<br>] | Available colors for all drawing items (overrides when individual item has its color config) |
 | **regionSizeIndicator** | [Object](#regionSizeIndicator) | {...} | Top-left region size indicator styles (see below) |
@@ -112,8 +113,8 @@ let screenshot = new RegionScreenshot({
 | **className** | String | Custom class name for the drawing item |
 | **optionsHtml** | String | Defines the HTML content for the secondary menu of the custom drawing item |
 | **onOptionsCreated** | Function | This function is called when the secondary menu of the custom drawing item is created. The parameter allows access to the `secondary menu DOM object`. |
-| **onDrawingOpen** | Function | This function is invoked when the custom drawing item is activated. Parameters provide access to the `secondary menu DOM object`, `canvas DOM object`, and a `function to save history`. Note: Please invoke the `function to save history` after each custom drawing action to ensure the undo feature of the plugin functions correctly. |
-| **onDrawingClose** | Function | This function is called when the custom drawing item is closed |
+| **onDrawingOpen** | Function | This function is invoked when the custom drawing item is activated. Parameters provide access to the `canvas DOM object`,`secondary menu DOM object`, and a `function to save history`. Note: Please invoke the `function to save history` after each custom drawing action to ensure the undo feature of the plugin functions correctly. |
+| **onDrawingClose** | Function | This function is called when the custom drawing item is closed.Parameters provide access to the `canvas DOM object`,`secondary menu DOM object`|
 ### Event
 #### Code Example
 ```js

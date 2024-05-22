@@ -1690,7 +1690,7 @@ class Tools extends Base {
 
     return () => {
       if (typeof li.onDrawingClose == "function") {
-        li.onDrawingClose(this.canvas);
+        li.onDrawingClose(this.canvas,li);
       }
     };
   }

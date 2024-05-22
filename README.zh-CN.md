@@ -41,6 +41,7 @@ screenshot.on("screenshotGenerated",(dataUrl)=>{
 | 配置项 | 类型 | 默认值 | 描述 |
 | --- | --- | --- | --- |
 | **downloadName** | String | screenshot | 截图下载文件名 |
+| **regionColor** | String | #409eff | 选区轮廓颜色 |
 | **maskColor** | String | rgba(0,0,0,0.5) | 遮罩层颜色 |
 | **globalColorOptions** | Array | [<br>"#ff3a3a","#f8b60f",<br>"#0083ff","#40ff00",<br>"#363636","#e9e9e9"<br>] | 配置所有绘制项可供选择的颜色（当绘制项有单独的颜色配置时，该配置无效） |
 | **regionSizeIndicator** | [Object](#regionSizeIndicator) | {...} | 左上角区域大小指示器样式（见下文）|
@@ -111,8 +112,8 @@ let screenshot = new RegionScreenshot({
 | **className** | String | 自定义绘制项的类名 |
 | **optionsHtml** | String | 定义自定义绘制项二级菜单的html内容 |
 | **onOptionsCreated** | Function | 当自定义绘制项的二级菜单创建完成该函数将被调用，可在参数中获取到`二级菜单dom对象` |
-| **onDrawingOpen** | Function | 当自定义绘制项被激活时该函数将被调用，可在参数中获取到`二级菜单dom对象`、`canvas dom对象`、`保存历史记录函数`，注意：请在每次自定义绘制结束后调用`保存历史记录函数`，以确保插件的撤销功能正常 |
-| **onDrawingClose** | Function | 当自定义绘制项被关闭时该函数将被调用 |
+| **onDrawingOpen** | Function | 当自定义绘制项被激活时该函数将被调用，可在参数中获取到`canvas dom对象`、`二级菜单dom对象`、`保存历史记录函数`，注意：请在每次自定义绘制结束后调用`保存历史记录函数`，以确保插件的撤销功能正常 |
+| **onDrawingClose** | Function | 当自定义绘制项被关闭时该函数将被调用，可在参数中获取到`canvas dom对象`、`二级菜单dom对象` |
 ### Event
 #### 代码示例
 ```js
