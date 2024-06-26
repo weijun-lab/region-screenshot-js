@@ -121,6 +121,7 @@ class SelectRegion extends Base {
     this.endY = 0;
     this.regionColor = options.regionColor;
     this.screenshot = options.screenshot;
+    this.initialRegion = options.initialRegion;
     let regionSizeIndicator = {
       show: true,
       color: "#ffffff",
@@ -151,60 +152,103 @@ class SelectRegion extends Base {
     );
     this.ctx.fillStyle = this.maskColor;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.triggerEvent(this.successCreatedCallback);
     let that = this;
-    let isMouseDown = false;
-    let isMouseMove = false;
-    let startX, startY, endX, endY;
-    function mousemove(e) {
-      isMouseMove = true;
-      let { x, y } = that.getMouseRelativeXy(e);
-      if (startX === undefined && startY === undefined) {
-        startX = x;
-        startY = y;
-        endX = x;
-        endY = y;
-      } else {
-        endX = x;
-        endY = y;
-      }
-      endX = Math.min(endX, that.canvas.width);
-      endY = Math.min(endY, that.canvas.height);
-      endX = Math.max(endX, 0);
-      endY = Math.max(endY, 0);
+    if (this.initialRegion) {
+      let { left, top, width, height } = this.initialRegion;
+      let startX = Math.max(left, 0);
+      let startY = Math.max(top, 0);
+      let endX = Math.min(width + left, innerWidth);
+      let endY = Math.min(height + top, innerHeight);
+      let params = {
+        startX,
+        startY,
+        endX,
+        endY,
+      };
+      that.triggerEvent(that.regionDragStartCallback, params);
       that.setRegionSize(startX, startY, endX, endY);
-    }
-
-    function mouseup() {
-      if (isMouseDown) {
-        document.removeEventListener("mousemove", mousemove);
-        if (!isMouseMove) {
-          //只是点了一下，鼠标没有选择区域
-          return;
+      that.triggerEvent(that.regionDragEndCallback, params);
+      this.allowDragRegion();
+    } else {
+      let isMouseDown = false;
+      let isMouseMove = false;
+      let isFirstMouseMove = true;
+      let startX, startY, endX, endY;
+      function mousemove(e) {
+        isMouseMove = true;
+        let { x, y } = that.getMouseRelativeXy(e);
+        if (startX === undefined && startY === undefined) {
+          startX = x;
+          startY = y;
+          endX = x;
+          endY = y;
+        } else {
+          endX = x;
+          endY = y;
         }
-        document.removeEventListener("mousemove", mousemove);
-        document.removeEventListener("mouseup", mouseup);
-        that.canvas.onmousedown = null;
-        that.canvas.style.cursor = "default";
-        that.allowDragRegion();
-
-        that.triggerEvent(that.regionDragEndCallback, {
-          startX: that.startX,
-          startY: that.startY,
-          endX: that.endX,
-          endY: that.endY,
-        });
+        endX = Math.min(endX, that.canvas.width);
+        endY = Math.min(endY, that.canvas.height);
+        endX = Math.max(endX, 0);
+        endY = Math.max(endY, 0);
+        if (isFirstMouseMove) {
+          that.triggerEvent(that.regionDragStartCallback, {
+            startX: startX,
+            startY: startY,
+            endX: endX,
+            endY: endY,
+          });
+        }
+        isFirstMouseMove = false;
+        that.setRegionSize(startX, startY, endX, endY);
       }
+
+      function mouseup() {
+        if (isMouseDown) {
+          document.removeEventListener("mousemove", mousemove);
+          if (!isMouseMove) {
+            //只是点了一下，鼠标没有选择区域
+            return;
+          }
+          document.removeEventListener("mousemove", mousemove);
+          document.removeEventListener("mouseup", mouseup);
+          that.canvas.onmousedown = null;
+          that.canvas.style.cursor = "default";
+          that.allowDragRegion();
+
+          that.triggerEvent(that.regionDragEndCallback, {
+            startX: that.startX,
+            startY: that.startY,
+            endX: that.endX,
+            endY: that.endY,
+          });
+        }
+      }
+      that.canvas.onmousedown = function () {
+        isMouseDown = true;
+        document.addEventListener("mousemove", mousemove);
+      };
+      document.addEventListener("mouseup", mouseup);
     }
-    that.canvas.onmousedown = function () {
-      isMouseDown = true;
-      document.addEventListener("mousemove", mousemove);
-    };
-    document.addEventListener("mouseup", mouseup);
   }
   allowDragRegion() {
     let that = this;
     const tolerance = 2; //鼠标划入的误差范围+-2px
     let mousemove = null;
+    let isFirstMouseMove = true;
+    let publicMousemove = () => {
+      let params = {
+        startX: that.startX,
+        startY: that.startY,
+        endX: that.endX,
+        endY: that.endY,
+      };
+      if (isFirstMouseMove) {
+        that.triggerEvent(that.regionDragStartCallback, params);
+      }
+      that.triggerEvent(that.regionDraggingCallback, params);
+      isFirstMouseMove = false;
+    };
     this.allowDragRegionMousemove = function (e) {
       let { x, y } = that.getMouseRelativeXy(e);
 
@@ -225,12 +269,7 @@ class SelectRegion extends Base {
         let withStartXdifferenc = undefined;
         let withStartYdifferenc = undefined;
         mousemove = function (e) {
-          that.triggerEvent(that.regionDraggingCallback, {
-            startX: that.startX,
-            startY: that.startY,
-            endX: that.endX,
-            endY: that.endY,
-          });
+          publicMousemove();
           that.canvas.style.cursor = "move";
           let { x, y } = that.getMouseRelativeXy(e);
           withStartXdifferenc ??= x - startX;
@@ -265,12 +304,7 @@ class SelectRegion extends Base {
         ) {
           that.canvas.style.cursor = "nw-resize";
           mousemove = function (e) {
-            that.triggerEvent(that.regionDraggingCallback, {
-              startX: that.startX,
-              startY: that.startY,
-              endX: that.endX,
-              endY: that.endY,
-            });
+            publicMousemove();
             that.canvas.style.cursor = "nw-resize";
             let mousePosition = that.getMouseRelativeXy(e);
             let { x, y } = boundaryConstraint(mousePosition);
@@ -286,12 +320,7 @@ class SelectRegion extends Base {
         ) {
           that.canvas.style.cursor = "ne-resize";
           mousemove = function (e) {
-            that.triggerEvent(that.regionDraggingCallback, {
-              startX: that.startX,
-              startY: that.startY,
-              endX: that.endX,
-              endY: that.endY,
-            });
+            publicMousemove();
             that.canvas.style.cursor = "ne-resize";
             let mousePosition = that.getMouseRelativeXy(e);
             let { x, y } = boundaryConstraint(mousePosition);
@@ -306,12 +335,7 @@ class SelectRegion extends Base {
         ) {
           that.canvas.style.cursor = "ne-resize";
           mousemove = function (e) {
-            that.triggerEvent(that.regionDraggingCallback, {
-              startX: that.startX,
-              startY: that.startY,
-              endX: that.endX,
-              endY: that.endY,
-            });
+            publicMousemove();
             that.canvas.style.cursor = "ne-resize";
             let mousePosition = that.getMouseRelativeXy(e);
             let { x, y } = boundaryConstraint(mousePosition);
@@ -327,12 +351,7 @@ class SelectRegion extends Base {
         ) {
           that.canvas.style.cursor = "nw-resize";
           mousemove = function (e) {
-            that.triggerEvent(that.regionDraggingCallback, {
-              startX: that.startX,
-              startY: that.startY,
-              endX: that.endX,
-              endY: that.endY,
-            });
+            publicMousemove();
             that.canvas.style.cursor = "nw-resize";
             let mousePosition = that.getMouseRelativeXy(e);
             let { x, y } = boundaryConstraint(mousePosition);
@@ -342,12 +361,7 @@ class SelectRegion extends Base {
         } else if (x >= startX - tolerance && x <= startX + tolerance) {
           that.canvas.style.cursor = "w-resize";
           mousemove = function (e) {
-            that.triggerEvent(that.regionDraggingCallback, {
-              startX: that.startX,
-              startY: that.startY,
-              endX: that.endX,
-              endY: that.endY,
-            });
+            publicMousemove();
             that.canvas.style.cursor = "w-resize";
             let mousePosition = that.getMouseRelativeXy(e);
             let { x } = boundaryConstraint(mousePosition);
@@ -357,12 +371,7 @@ class SelectRegion extends Base {
         } else if (x >= endX - tolerance && x <= endX + tolerance) {
           that.canvas.style.cursor = "w-resize";
           mousemove = function (e) {
-            that.triggerEvent(that.regionDraggingCallback, {
-              startX: that.startX,
-              startY: that.startY,
-              endX: that.endX,
-              endY: that.endY,
-            });
+            publicMousemove();
             that.canvas.style.cursor = "w-resize";
             let mousePosition = that.getMouseRelativeXy(e);
             let { x } = boundaryConstraint(mousePosition);
@@ -372,12 +381,7 @@ class SelectRegion extends Base {
         } else if (y >= startY - tolerance && y <= startY + tolerance) {
           that.canvas.style.cursor = "n-resize";
           mousemove = function (e) {
-            that.triggerEvent(that.regionDraggingCallback, {
-              startX: that.startX,
-              startY: that.startY,
-              endX: that.endX,
-              endY: that.endY,
-            });
+            publicMousemove();
             that.canvas.style.cursor = "n-resize";
             let mousePosition = that.getMouseRelativeXy(e);
             let { y } = boundaryConstraint(mousePosition);
@@ -387,12 +391,7 @@ class SelectRegion extends Base {
         } else if (y >= endY - tolerance && y <= endY + tolerance) {
           that.canvas.style.cursor = "n-resize";
           mousemove = function (e) {
-            that.triggerEvent(that.regionDraggingCallback, {
-              startX: that.startX,
-              startY: that.startY,
-              endX: that.endX,
-              endY: that.endY,
-            });
+            publicMousemove();
             that.canvas.style.cursor = "n-resize";
             let mousePosition = that.getMouseRelativeXy(e);
             let { y } = boundaryConstraint(mousePosition);
@@ -409,18 +408,12 @@ class SelectRegion extends Base {
     this.dragRegionMousedown = function () {
       _mousemove = mousemove;
       if (!_mousemove) return;
-      that.triggerEvent(that.regionDragStartCallback, {
-        startX: that.startX,
-        startY: that.startY,
-        endX: that.endX,
-        endY: that.endY,
-      });
-
       document.addEventListener("mousemove", mousemove);
     };
     this.canvas.addEventListener("mousedown", this.dragRegionMousedown);
     function mouseup() {
       if (!_mousemove) return;
+      isFirstMouseMove = true;
       that.triggerEvent(that.regionDragEndCallback, {
         startX: that.startX,
         startY: that.startY,
@@ -589,8 +582,7 @@ class Tools extends Base {
     this.region = options.region;
     this.screenshot = options.screenshot;
     this.customDrawing = options.customDrawing ?? [];
-    this.downloadName =
-      options.downloadName ?? "screenshot";
+    this.downloadName = options.downloadName ?? "screenshot";
     this.globalColorOptions = options.globalColorOptions ?? [
       "#ff3a3a",
       "#f8b60f",
@@ -832,10 +824,11 @@ class Tools extends Base {
       toolsList[0].appendChild(li);
       li.onDrawingClose = item.onDrawingClose;
       li.onDrawingOpen = item.onDrawingOpen;
-      if(typeof item.onOptionsCreated=="function"){
-        item.onOptionsCreated($(li).find(".region-screenshot_tools_options")[0]);
+      if (typeof item.onOptionsCreated == "function") {
+        item.onOptionsCreated(
+          $(li).find(".region-screenshot_tools_options")[0]
+        );
       }
-      
     });
     rectangleOptions.lineWidth.forEach((item) => {
       let el = $(
@@ -1292,8 +1285,8 @@ class Tools extends Base {
       let { x, y } = that.getMouseRelativeXy(e);
       x = Math.min(x, that.canvas.width);
       y = Math.min(y, that.canvas.height);
-      x = Math.max(x,0);
-      y = Math.max(y,0);
+      x = Math.max(x, 0);
+      y = Math.max(y, 0);
       let lineWidth = that.checkedLineWidth;
       let lineColor = that.checkedLineColor;
       drawAction = () => {
@@ -1681,16 +1674,15 @@ class Tools extends Base {
   drawCustom(that) {
     let li = $(that).parent()[0];
     this.createCanvas();
-    if(typeof li.onDrawingOpen=="function"){
+    if (typeof li.onDrawingOpen == "function") {
       li.onDrawingOpen(this.canvas, li, () => {
         this.saveHistory();
       });
     }
-    
 
     return () => {
       if (typeof li.onDrawingClose == "function") {
-        li.onDrawingClose(this.canvas,li);
+        li.onDrawingClose(this.canvas, li);
       }
     };
   }
@@ -1724,7 +1716,7 @@ class RegionScreenshot extends Base {
       overflow: bodyStyle.overflow,
       userSelect: bodyStyle.userSelect,
     };
-
+    this.initializeFinished = false;
     document.body.style.userSelect = "none";
     document.body.style.overflow = "hidden";
 
@@ -1736,10 +1728,8 @@ class RegionScreenshot extends Base {
         let img = new Image();
         img.src = dataUrl;
         img.onload = () => {
+          if (!this.webRTCStream) return;
           this.region.screenshot = img;
-          this.region.init();
-          this.tools.screenshot = img;
-          this.triggerEvent(this.successCreatedCallback);
           this.region.on("regionDragStart", (e) => {
             this.tools.updateHandleDisplay("none");
           });
@@ -1747,7 +1737,8 @@ class RegionScreenshot extends Base {
             this.tools.updateHandleDisplay("flex");
             this.tools.updateHandlePosition(e);
           });
-
+          this.tools.screenshot = img;
+          this.region.init();
           this.tools.on("toolsCanvasCreated", () => {
             this.region.notAllowDragRegion();
           });
@@ -1760,6 +1751,7 @@ class RegionScreenshot extends Base {
           this.tools.on("screenshotGenerated", () => {
             this.close();
           });
+          this.initializeFinished = true;
         };
         img.onerror = (error) => {
           this.triggerEvent(this.errorCreatedCallback, error);
@@ -1790,10 +1782,10 @@ class RegionScreenshot extends Base {
           video.setAttribute("autoplay", "autoplay");
           video.srcObject = stream;
           this.webRTCStream = stream;
+          let timeout = null;
           video.onplay = function () {
-            setTimeout(function () {
+            timeout = setTimeout(function () {
               topEl.remove();
-              if (!that.webRTCStream) return;
               let canvas = document.createElement("canvas");
               canvas.width = innerWidth;
               canvas.height = innerHeight;
@@ -1804,7 +1796,13 @@ class RegionScreenshot extends Base {
           };
           let that = this;
           stream.getTracks()[0].onended = function () {
-            that.triggerEvent(that.closedCallback);
+            topEl.remove();
+            if (that.initializeFinished) {
+              that.triggerEvent(that.closedCallback);
+            } else {
+              clearTimeout(timeout);
+              that.triggerEvent(that.errorCreatedCallback);
+            }
             that.close();
           };
         })
@@ -1816,10 +1814,10 @@ class RegionScreenshot extends Base {
   }
   close() {
     if (this.region) {
-      this.region.canvas&&this.region.canvas.remove();
+      this.region.canvas && this.region.canvas.remove();
     }
     if (this.tools) {
-      this.tools.handle&&this.tools.handle.remove();
+      this.tools.handle && this.tools.handle.remove();
       this.tools.canvas && this.tools.canvas.remove();
     }
 

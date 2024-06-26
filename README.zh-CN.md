@@ -51,6 +51,7 @@ screenshot.on("screenshotGenerated",(dataUrl)=>{
 | **mosaicOptions** | Object | {<br>size: [6, 8, 10]<br>} | 配置马赛克绘制项可供选择的线宽 |
 | **textOptions** | Object | {<br>color:globalColorOptions,<br>size: [16, 18, 20]<br>} | 配置文字绘制项可供选择的颜色和字体尺寸 |
 | **arrowOptions** | Object | {<br>color:globalColorOptions,<br>size: [4, 6, 8]<br>} | 配置箭头绘制项可供选择的颜色和线宽 |
+| **initialRegion** | [Object](#initialRegion) | - | 初始化时自动选取所配置的区域 |
 | **customDrawing** |  Array<br><[customDrawingObject](#customDrawingObject)> | - | 自定义绘制（见下文） |
 
 <a id="regionSizeIndicator"></a>
@@ -62,9 +63,27 @@ screenshot.on("screenshotGenerated",(dataUrl)=>{
 | **color** | String | #ffffff | 尺寸指示器颜色 |
 | **fontSize** | Number | 14 | 尺寸指示器尺寸 |
 
+<a id="initialRegion"></a>
+
+#### initialRegion
+| Options | Type | Default | Description |
+| --- | --- | --- | --- |
+| **left** | Number | - | 初始化选区的横向起始位置 |
+| **top** | Number | - | 初始化选区的纵向起始位置 |
+| **width** | Number | - | 初始化选区的宽度 |
+| **height** | Number | - | 初始化选区的高度 |
+
 <a id="customDrawingObject"></a>
 
 #### customDrawingObject
+| 配置项 | 类型 | 描述 |
+| --- | --- | --- |
+| **className** | String | 自定义绘制项的类名 |
+| **optionsHtml** | String | 定义自定义绘制项二级菜单的html内容 |
+| **onOptionsCreated** | Function | 当自定义绘制项的二级菜单创建完成该函数将被调用，可在参数中获取到`二级菜单dom对象` |
+| **onDrawingOpen** | Function | 当自定义绘制项被激活时该函数将被调用，可在参数中获取到`canvas dom对象`、`二级菜单dom对象`、`保存历史记录函数`，注意：请在每次自定义绘制结束后调用`保存历史记录函数`，以确保插件的撤销功能正常 |
+| **onDrawingClose** | Function | 当自定义绘制项被关闭时该函数将被调用，可在参数中获取到`canvas dom对象`、`二级菜单dom对象` |
+
 ##### Code Example
 ```js
 //其中“$”来自于jquery.js
@@ -107,24 +126,7 @@ let screenshot = new RegionScreenshot({
   ],
 });
 ```
-| 配置项 | 类型 | 描述 |
-| --- | --- | --- |
-| **className** | String | 自定义绘制项的类名 |
-| **optionsHtml** | String | 定义自定义绘制项二级菜单的html内容 |
-| **onOptionsCreated** | Function | 当自定义绘制项的二级菜单创建完成该函数将被调用，可在参数中获取到`二级菜单dom对象` |
-| **onDrawingOpen** | Function | 当自定义绘制项被激活时该函数将被调用，可在参数中获取到`canvas dom对象`、`二级菜单dom对象`、`保存历史记录函数`，注意：请在每次自定义绘制结束后调用`保存历史记录函数`，以确保插件的撤销功能正常 |
-| **onDrawingClose** | Function | 当自定义绘制项被关闭时该函数将被调用，可在参数中获取到`canvas dom对象`、`二级菜单dom对象` |
 ### Event
-#### 代码示例
-```js
-let screenshot = new RegionScreenshot();
-screenshot.on("successCreated",(dataUrl)=>{
-	console.log("插件初始化成功");
-});
-screenshot.on("screenshotGenerated",(dataUrl)=>{
-	console.log(dataUrl);
-});
-```
 | 事件名称 | 描述 |
 | --- | --- |
 | **screenshotGenerated** | 截图生成完成时触发，可在回调中获取`图片base64编码` |
@@ -135,6 +137,17 @@ screenshot.on("screenshotGenerated",(dataUrl)=>{
 | **successCreated** | 插件初始化成功时触发 |
 | **errorCreated** | 插件初始化失败时触发，可在回调中接受`错误信息` |
 | **closed** | 插件被关闭时触发 |
+
+#### 代码示例
+```js
+let screenshot = new RegionScreenshot();
+screenshot.on("successCreated",(dataUrl)=>{
+	console.log("插件初始化成功");
+});
+screenshot.on("screenshotGenerated",(dataUrl)=>{
+	console.log(dataUrl);
+});
+```
 # 🎉致谢与引用
 感谢以下插件，他们为region-screenshot-js实现提供了支持.
 * [dom-to-image](https://github.com/tsayen/dom-to-image) 一个将dom节点转换成图片的插件（在文字绘制时使用了该插件）

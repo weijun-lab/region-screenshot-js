@@ -52,6 +52,7 @@ screenshot.on("screenshotGenerated",(dataUrl)=>{
 | **mosaicOptions** | Object | {<br>size: [6, 8, 10]<br>} | Configures available line widths for Mosaic |
 | **textOptions** | Object | {<br>color:globalColorOptions,<br>size: [16, 18, 20]<br>} | Configures available text colors and font sizes |
 | **arrowOptions** | Object | {<br>color:globalColorOptions,<br>size: [4, 6, 8]<br>} | Configures available arrow colors and line widths |
+| **initialRegion** | [Object](#initialRegion) | - | The configured region is automatically selected during initialization |
 | **customDrawing** |  Array<br><[customDrawingObject](#customDrawingObject)>  | - | Custom drawings (see below) |
 
 <a id="regionSizeIndicator"></a>
@@ -63,9 +64,27 @@ screenshot.on("screenshotGenerated",(dataUrl)=>{
 | **color** | String | #ffffff | Size indicator color |
 | **fontSize** | Number | 14 | Size indicator font size |
 
+<a id="initialRegion"></a>
+
+#### initialRegion
+| Options | Type | Default | Description |
+| --- | --- | --- | --- |
+| **left** | Number | - | Initializes the horizontal starting position of the selection |
+| **top** | Number | - | Initializes the vertical starting position of the selection |
+| **width** | Number | - | Initializes the width of the selection |
+| **height** | Number | - | Initializes the height of the selection |
+
 <a id="customDrawingObject"></a>
 
 #### customDrawingObject
+| Options | Type | Description |
+| --- | --- | --- |
+| **className** | String | Custom class name for the drawing item |
+| **optionsHtml** | String | Defines the HTML content for the secondary menu of the custom drawing item |
+| **onOptionsCreated** | Function | This function is called when the secondary menu of the custom drawing item is created. The parameter allows access to the `secondary menu DOM object`. |
+| **onDrawingOpen** | Function | This function is invoked when the custom drawing item is activated. Parameters provide access to the `canvas DOM object`,`secondary menu DOM object`, and a `function to save history`. Note: Please invoke the `function to save history` after each custom drawing action to ensure the undo feature of the plugin functions correctly. |
+| **onDrawingClose** | Function | This function is called when the custom drawing item is closed.Parameters provide access to the `canvas DOM object`,`secondary menu DOM object`|
+
 ##### Code Example
 ```js
 // "$" is from jquery.js
@@ -108,24 +127,7 @@ let screenshot = new RegionScreenshot({
   ],
 });
 ```
-| Options | Type | Description |
-| --- | --- | --- |
-| **className** | String | Custom class name for the drawing item |
-| **optionsHtml** | String | Defines the HTML content for the secondary menu of the custom drawing item |
-| **onOptionsCreated** | Function | This function is called when the secondary menu of the custom drawing item is created. The parameter allows access to the `secondary menu DOM object`. |
-| **onDrawingOpen** | Function | This function is invoked when the custom drawing item is activated. Parameters provide access to the `canvas DOM object`,`secondary menu DOM object`, and a `function to save history`. Note: Please invoke the `function to save history` after each custom drawing action to ensure the undo feature of the plugin functions correctly. |
-| **onDrawingClose** | Function | This function is called when the custom drawing item is closed.Parameters provide access to the `canvas DOM object`,`secondary menu DOM object`|
 ### Event
-#### Code Example
-```js
-let screenshot = new RegionScreenshot();
-screenshot.on("successCreated",(dataUrl)=>{
-	console.log("Plugin initialized successfully.");
-});
-screenshot.on("screenshotGenerated",(dataUrl)=>{
-	console.log(dataUrl);
-});
-```
 | Event | Description |
 | --- | --- |
 | **screenshotGenerated** | Triggered upon screenshot completion; retrieves the `image base64 encoding` in callback |
@@ -136,6 +138,17 @@ screenshot.on("screenshotGenerated",(dataUrl)=>{
 | **successCreated** | Triggered upon successful plugin initialization |
 | **errorCreated** | Triggered on plugin initialization failure; receives an `error message` in callback |
 | **closed** | Triggered when the plugin is closed |
+
+#### Code Example
+```js
+let screenshot = new RegionScreenshot();
+screenshot.on("successCreated",(dataUrl)=>{
+	console.log("Plugin initialized successfully.");
+});
+screenshot.on("screenshotGenerated",(dataUrl)=>{
+	console.log(dataUrl);
+});
+```
 # 🎉Acknowledgements & References
 I gratitude to the following open-source plugins, which have provided essential support for the functionality.
 * [dom-to-image](https://github.com/tsayen/dom-to-image) A plugin to convert DOM nodes into images (used for text drawing).
