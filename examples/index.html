@@ -190,7 +190,7 @@
             $(".screenshot-img").fadeIn();
             $(".screenshot-img img").attr("src", res);
         });
-        screenshot.on("closed", (res) => {
+        screenshot.on("successCreated", (res) => {
             disabled = false;
         });
         screenshot.on("errorCreated", (res) => {
@@ -212,7 +212,7 @@
             $(".screenshot-img").fadeIn();
             $(".screenshot-img img").attr("src", res);
         });
-        screenshot.on("closed", (res) => {
+        screenshot.on("successCreated", (res) => {
             disabled = false;
         });
         screenshot.on("errorCreated", (res) => {
@@ -264,7 +264,7 @@
             $(".screenshot-img").fadeIn();
             $(".screenshot-img img").attr("src", res);
         });
-        screenshot.on("closed", (res) => {
+        screenshot.on("successCreated", (res) => {
             disabled = false;
         });
         screenshot.on("errorCreated", (res) => {
